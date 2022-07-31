@@ -22,9 +22,18 @@ const login = async (req, res) => {
     throw new UnauthenticatedError('Invalid Credentials')
   }
 
+  const isPasswordSame = await getUser.comparePassword(password)
+  if (!isPasswordSame) {
+    throw new UnauthenticatedError('Invalid Credentials')
+  }
   // invoke jwt
   const userToken = getUser.createJWT()
-  res.status(StatusCodes.OK).json({ user: { name: getUser.name }, userToken })
+  res
+    .status(StatusCodes.OK)
+    .json({
+      user: `name: ${getUser.name} has successfully logged in`,
+      userToken,
+    })
 }
 
 module.exports = {
