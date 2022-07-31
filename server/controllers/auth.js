@@ -5,8 +5,10 @@ const BadRequestError = require('../../errors/badRequest')
 
 const register = async (req, res) => {
   const regUser = await User.create({ ...req.body })
-
-  res.status(StatusCodes.CREATED).json(regUser)
+  const newToken = regUser.createJWT()
+  res
+    .status(StatusCodes.CREATED)
+    .json({ user: { name: regUser.name }, newToken })
 }
 
 const login = async (req, res) => {
