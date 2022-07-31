@@ -2,6 +2,7 @@ const User = require('../models/UserSchema')
 const { StatusCodes } = require('http-status-codes')
 const bcrypt = require('bcryptjs')
 const BadRequestError = require('../../errors/badRequest')
+const UnauthenticatedError = require('../../errors/unauthError')
 
 const register = async (req, res) => {
   const regUser = await User.create({ ...req.body })
@@ -12,7 +13,18 @@ const register = async (req, res) => {
 }
 
 const login = async (req, res) => {
-  res.send('login')
+  const { email, password } = req.body
+  if (!email || !password) {
+    throw new BadRequestError('Please provide email and password')
+  }
+  const getUser = await User.findOne({ email })
+  if (!getUser) {
+    throw new UnauthenticatedError('Invalid Credentials')
+  }
+
+  // invoke jwt
+  const userToken = getUser.createJWT()
+  res.status(StatusCodes.OK).json({ user: { name: getUser.name }, userToken })
 }
 
 module.exports = {
