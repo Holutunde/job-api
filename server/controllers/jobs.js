@@ -1,4 +1,6 @@
-const createJob = async (req, res) => {}
+const createJob = async (req, res) => {
+  res.send('Jobs Created')
+}
 const getAllJobs = async (req, res) => {}
 const getJob = async (req, res) => {}
 

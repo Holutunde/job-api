@@ -7,11 +7,12 @@ const auth = require('./server/routes/auth')
 const jobs = require('./server/routes/jobs')
 const notFound = require('./middleware/notFound')
 const errorHandler = require('./middleware/errorHandler')
+const aunthenticateUser = require('./middleware/authentication')
 
 app.use(express.json())
 
 app.use('/api/auth', auth)
-app.use('/api/jobs', jobs)
+app.use('/api/jobs', aunthenticateUser, jobs)
 
 app.use(notFound)
 app.use(errorHandler)
