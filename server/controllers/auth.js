@@ -28,12 +28,10 @@ const login = async (req, res) => {
   }
   // invoke jwt
   const userToken = getUser.createJWT()
-  res
-    .status(StatusCodes.OK)
-    .json({
-      user: `name: ${getUser.name} has successfully logged in`,
-      userToken,
-    })
+  res.status(StatusCodes.OK).json({
+    user: `name: ${getUser.name} has successfully logged in`,
+    userToken,
+  })
 }
 
 module.exports = {
