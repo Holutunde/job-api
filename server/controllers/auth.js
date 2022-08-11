@@ -3,10 +3,18 @@ const { StatusCodes } = require('http-status-codes')
 const bcrypt = require('bcryptjs')
 const BadRequestError = require('../../errors/badRequest')
 const UnauthenticatedError = require('../../errors/unauthError')
+const registerMail = require('../../utils/registerEmail')
 
 const register = async (req, res) => {
   const regUser = await User.create({ ...req.body })
   const newToken = regUser.createJWT()
+  const email = regUser.email
+  const name = regUser.name
+  try {
+    await registerMail(email, name)
+  } catch (err) {
+    console.log(err)
+  }
   res
     .status(StatusCodes.CREATED)
     .json({ user: { name: regUser.name }, newToken })
