@@ -13,7 +13,9 @@ app.use(express.json())
 
 app.use('/api/auth', auth)
 app.use('/api/jobs', aunthenticateUser, jobs)
-
+app.get('/', (req, res) => {
+  res.send('<h1>Jobs API</h1><a href="/api-docs">Documentation</a>')
+})
 app.use(notFound)
 app.use(errorHandler)
 
